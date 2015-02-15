@@ -30,7 +30,9 @@ function upload(file, callback){
   var basename = path.basename(file);
 
   client.uploadFile(file, {key : basename}, function(err, result){
+    result = result || {};
     result.file = file;
+
     if(!err){//上传成功
       callback(UPLOAD_DONE, result);
     }
@@ -63,7 +65,7 @@ function uploadFiles(files){
             console.log(('[INFO]  ' + data.url + '  ' + data.file + '  done!').green);
           }
           else{
-            console.log(('[ERROR]  ' + data.file + '  ' + data.error).red);
+            console.log(('[ERROR]  ' + data.file + '  ' + (data.error ? data.error : 'fail! maybe caused by your network.')).red);
           }
           exec();
         });
