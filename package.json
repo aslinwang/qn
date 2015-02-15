@@ -1,6 +1,6 @@
 {
-  "name": "qn",
-  "version": "0.0.1",
+  "name": "qn1",
+  "version": "0.0.2",
   "description": "client for qiniu",
   "repository": {
     "type": "git",
@@ -24,7 +24,8 @@
   "main": "qn.js",
   "dependencies": {
     "qn": "*",
-    "gearjs": "*"
+    "gearjs": "*",
+    "colors": "*"
   },
   "devDependencies": {
   }

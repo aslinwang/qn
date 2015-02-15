@@ -4,6 +4,7 @@
 var fs = require('fs');
 var path = require('path');
 var qnapi = require('qn');
+var colors = require('colors');
 var gear = require('gearjs');
 var qn = require('../qn.js');
 
@@ -59,10 +60,10 @@ function uploadFiles(files){
       else{
         upload(file, function(code, data){
           if(code == UPLOAD_DONE){
-            console.log('[INFO]  ' + data.url + '  ' + data.file + '  done!');
+            console.log(('[INFO]  ' + data.url + '  ' + data.file + '  done!').green);
           }
           else{
-            console.log('[ERROR]  ' + data.file + '  ' + data.error);
+            console.log(('[ERROR]  ' + data.file + '  ' + data.error).red);
           }
           exec();
         });
