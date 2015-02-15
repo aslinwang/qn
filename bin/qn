@@ -1,0 +1,87 @@
+#!/usr/bin/env node
+'use strict'
+
+var fs = require('fs');
+var path = require('path');
+var qnapi = require('qn');
+var gear = require('gearjs');
+var qn = require('../qn.js');
+
+var UPLOAD_NO_FILE = '-1';//no file to upload
+var UPLOAD_DONE = '0';// upload done
+var UPLOAD_FAIL = '1';// upload fail
+
+var client = qnapi.create({
+  accessKey: qn.config.accessKey,
+  secretKey: qn.config.secretKey,
+  bucket: qn.config.bucket,
+  domain: qn.config.domain
+});
+
+var cwd = process.cwd();
+
+function upload(file, callback){
+  if(!file){
+    callback(UPLOAD_NO_FILE);
+    return;
+  }
+
+  var basename = path.basename(file);
+
+  client.uploadFile(file, {key : basename}, function(err, result){
+    result.file = file;
+    if(!err){//上传成功
+      callback(UPLOAD_DONE, result);
+    }
+    else{
+      callback(UPLOAD_FAIL, result);
+    }
+  });
+}
+
+
+function uploadFiles(files){
+  function action(_files){
+    _files = _files.filter(function(file){
+      var stat = fs.lstatSync(file);
+      if(stat.isDirectory()){
+        return false;  
+      }
+      else{
+        return true;
+      }
+    });
+    var exec = function(){
+      var file = _files.shift();
+      if(!file){
+        return;
+      }
+      else{
+        upload(file, function(code, data){
+          if(code == UPLOAD_DONE){
+            console.log('[INFO]  ' + data.url + '  ' + data.file + '  done!');
+          }
+          else{
+            console.log('[ERROR]  ' + data.file + '  ' + data.error);
+          }
+          exec();
+        });
+      }
+    }
+
+    exec();
+  }
+  if(files.length == 0){
+    fs.readdir(cwd, function(err, _files){
+      action(_files);
+    });
+  }
+  else{
+    action(files);
+  }
+}
+
+var args = process.argv;
+args = args.slice(2);
+uploadFiles(args);
+

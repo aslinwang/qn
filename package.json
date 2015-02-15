@@ -1,0 +1,31 @@
+{
+  "name": "qn",
+  "version": "0.0.1",
+  "description": "client for qiniu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aslinwang/qn.git"
+  },
+  "keywords": [
+    "qiniu",
+    "client"
+  ],
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "aslinwang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aslinwang/qn/issues"
+  },
+  "bin": {
+    "qn": "bin/qn"
+  },
+  "main": "qn.js",
+  "dependencies": {
+    "qn": "*",
+    "gearjs": "*"
+  },
+  "devDependencies": {
+  }
+}
